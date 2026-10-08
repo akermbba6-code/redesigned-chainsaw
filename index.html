@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AKRAM BOUTIQUE — Fashion Homme</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:#f4f0e8;font-family:Arial,sans-serif}
+a{color:inherit;text-decoration:none}.top{padding:10px 5%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid #252525;font-size:13px}
+nav{height:84px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252525;background:#080808;position:sticky;top:0;z-index:5}
+.logo{width:68px;height:68px;border-radius:50%;object-fit:cover}.links{display:flex;gap:30px;font-size:15px}.links a:hover{color:#e1ad4b}
+.hero{min-height:570px;padding:70px 6%;display:flex;align-items:center;background:linear-gradient(90deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.72) 43%,rgba(5,5,5,.15) 100%),url('ensembles.jpg') center/cover}
+.hero-content{max-width:600px}.eyebrow{letter-spacing:4px;color:#e1ad4b;font-size:14px}h1{font:64px/1.02 Georgia,serif;margin:15px 0}.gold{color:#e1ad4b}.hero p{font-size:18px;line-height:1.6;color:#d1cdc5}.btn,.buy{display:inline-block;background:#e1ad4b;color:#111;padding:14px 22px;border-radius:9px;font-weight:700}
+section{padding:55px 6%;border-bottom:1px solid #242424}.categories,.products,.features{display:grid;gap:20px}.categories{grid-template-columns:repeat(4,1fr)}.cat,.card{background:#111;border:1px solid #333;border-radius:10px;overflow:hidden}.cat img{width:100%;height:180px;object-fit:cover}.cat h3{padding:0 18px 16px;font-size:18px}.title{font:38px Georgia,serif;text-align:center;margin:0 0 35px}.products{grid-template-columns:repeat(4,1fr)}.card img{width:100%;height:240px;object-fit:cover}.info{padding:14px}.tag{background:#e1ad4b;color:#111;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:bold}.card h3{margin:14px 0 5px}.price{font-size:21px;color:#e1ad4b;margin-bottom:14px}.sizes{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.size{border:1px solid #777;background:#151515;color:#eee;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer}.size.selected{background:#e1ad4b;color:#111;border-color:#e1ad4b;font-weight:bold}.buy{width:100%;text-align:center;font-size:13px}
+.features{grid-template-columns:repeat(4,1fr);text-align:center}.feature{padding:20px}.feature b{display:block;color:#e1ad4b;margin-bottom:8px}.banner{background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.55)),url('tshirts.jpg') center/cover;padding:65px 7%}.banner h2{font:42px Georgia,serif;margin:0 0 10px}footer{padding:45px 6%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;color:#bbb}footer h3{color:#fff}.copy{border-top:1px solid #222;text-align:center;padding:18px;color:#777;font-size:13px}
+@media(max-width:800px){.links{gap:12px;font-size:12px}.hero{min-height:520px}h1{font-size:46px}.categories,.products{grid-template-columns:1fr 1fr}.features{grid-template-columns:1fr 1fr}footer{grid-template-columns:1fr}}
+@media(max-width:480px){.links{display:none}.categories,.products,.features{grid-template-columns:1fr}.top{font-size:11px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="top"><span>🚚 Livraison disponible dans toute l'Algérie</span><span>🛡 Paiement à la livraison</span><span>📞 07 94 06 12 70</span></div>
+<nav><img class="logo" src="logo.png" alt="AKRAM BOUTIQUE"><div class="links"><a href="#accueil">Accueil</a><a href="#boutique">Boutique</a><a href="#apropos">À propos</a><a href="#contact">Contact</a></div></nav>
+<header class="hero" id="accueil"><div class="hero-content"><div class="eyebrow">AKRAM BOUTIQUE — FASHION HOMME</div><h1>Le style <span class="gold">au quotidien</span></h1><p>T-shirts · Ensembles · Pantalons · Vestes</p><p>Des vêtements modernes et tendance pour un style unique, à chaque occasion.</p><a class="btn" href="#boutique">Découvrir la boutique →</a></div></header>
+<section id="boutique"><h2 class="title">Nos catégories</h2><div class="categories">
+<div class="cat"><img src="tshirts.jpg"><h3>T-Shirts →</h3></div><div class="cat"><img src="ensembles.jpg"><h3>Ensembles →</h3></div><div class="cat"><img src="pantalons.jpg"><h3>Pantalons →</h3></div><div class="cat"><img src="vestes.jpg"><h3>Vestes →</h3></div>
+</div></section>
+<section><h2 class="title">Nos produits</h2><div class="products" id="productsGrid"></div></section>
+<section id="apropos"><div class="features"><div class="feature"><b>✦ Qualité garantie</b>Des vêtements sélectionnés avec soin.</div><div class="feature"><b>🚚 Livraison rapide</b>Partout en Algérie.</div><div class="feature"><b>🛡 Paiement à la livraison</b>En toute sécurité.</div><div class="feature"><b>☎ Service client</b>À votre écoute.</div></div></section>
+<section class="banner"><h2>Plus qu'un style,<br><span class="gold">une attitude</span></h2><p>Vêtements homme tendance, confortables et de qualité.</p><a class="btn" href="https://wa.me/213794061270?text=Bonjour%20AKRAM%20BOUTIQUE%2C%20je%20souhaite%20commander" target="_blank">💬 Commander sur WhatsApp</a></section>
+<footer id="contact"><div><img class="logo" src="logo.png" alt="AKRAM"><p>AKRAM BOUTIQUE — Fashion Homme</p></div><div><h3>Liens rapides</h3><p><a href="#accueil">Accueil</a></p><p><a href="#boutique">Boutique</a></p><p><a href="#apropos">À propos</a></p><p><a href="#contact">Contact</a></p></div><div><h3>Nous contacter</h3><p>📞 07 94 06 12 70</p><p>📍 Bordj Bou Arréridj, Algérie</p><p>💬 WhatsApp : 07 94 06 12 70</p></div></footer>
+<div class="copy">© 2026 AKRAM BOUTIQUE. Tous droits réservés.</div>
+<script>
+const defaults=[
+{name:"T-shirt",price:3200,image:"tshirts.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Ensemble",price:7500,image:"ensembles.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Pantalon",price:3800,image:"pantalons.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Veste",price:4500,image:"vestes.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"}];
+let products=JSON.parse(localStorage.getItem("akram_products")||"null")||defaults;
+const grid=document.getElementById("productsGrid");
+function money(n){return Number(n).toLocaleString("fr-FR")+" DA"}
+function render(){
+ grid.innerHTML=products.map((p,i)=>`<article class="card"><img src="${p.image}" alt="${p.name}"><div class="info"><span class="tag">${p.tag||"Nouveau"}</span><h3>${p.name}</h3><div class="price">${money(p.price)}</div><div class="sizes">${(p.sizes||["S","M","L","XL","XXL"]).map((s,j)=>`<button class="size ${j===0?"selected":""}" onclick="chooseSize(${i},'${String(s).replace(/'/g,"\\'")}',this)">${s}</button>`).join("")}</div><a class="buy" id="buy-${i}" href="${wa(p,""+((p.sizes||["S"])[0]))}" target="_blank">💬 Commander — Taille ${(p.sizes||["S"])[0]}</a></div></article>`).join("");
+}
+function wa(p,size){return "https://wa.me/213794061270?text="+encodeURIComponent(`Bonjour AKRAM BOUTIQUE, je souhaite commander : ${p.name} - Taille ${size}`)}
+function chooseSize(i,size,btn){btn.parentElement.querySelectorAll(".size").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");const a=document.getElementById("buy-"+i);a.href=wa(products[i],size);a.textContent="💬 Commander — Taille "+size}
+render();
+</script>
+</body></html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة إدارة — AKRAM BOUTIQUE</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif}.wrap{max-width:900px;margin:auto;padding:20px}.head{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #333;padding-bottom:15px}.logo{width:70px;height:70px;border-radius:50%;object-fit:cover}.panel,.product{background:#121212;border:1px solid #333;border-radius:14px;padding:18px;margin-top:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;color:#d9b15d;margin-bottom:6px}input,textarea{width:100%;background:#1b1b1b;color:#fff;border:1px solid #555;border-radius:8px;padding:12px}button{border:0;border-radius:8px;padding:11px 15px;font-weight:bold;cursor:pointer}.gold{background:#e1ad4b;color:#111}.dark{background:#292929;color:#fff}.danger{background:#7d2424;color:#fff}.products{display:grid;gap:12px}.product{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:15px}.product img{width:90px;height:90px;object-fit:cover;border-radius:10px}.muted{color:#aaa;font-size:13px}.actions{display:flex;gap:7px;flex-wrap:wrap}.sizes{direction:ltr}.notice{background:#201b10;border:1px solid #6c5420;padding:12px;border-radius:10px;line-height:1.7}.file{padding:8px}.small{font-size:12px;color:#aaa}@media(max-width:650px){.grid{grid-template-columns:1fr}.product{grid-template-columns:70px 1fr}.product .actions{grid-column:1/-1}.product img{width:70px;height:70px}}
+</style></head>
+<body><div class="wrap">
+<div class="head"><div><h1>لوحة إدارة AKRAM BOUTIQUE</h1><div class="muted">إضافة وتعديل وحذف المنتجات والمقاسات</div></div><img class="logo" src="logo.png"></div>
+<div class="panel notice"><b>مهم:</b> هذه لوحة إدارة مناسبة للموقع الثابت على GitHub Pages. التعديلات تُحفظ على نفس الهاتف والمتصفح. لكي تظهر للزوار على الإنترنت، استخدم زر <b>تصدير products.json</b> ثم ارفع الملف إلى GitHub عند تحديث المنتجات. لا تضع كلمات مرور أو مفاتيح سرية هنا.</div>
+<div class="panel"><h2>إضافة منتج</h2><div class="grid">
+<div><label>اسم المنتج</label><input id="name" placeholder="مثال: T-shirt"></div>
+<div><label>السعر بالدينار</label><input id="price" type="number" placeholder="3200"></div>
+<div><label>المقاسات</label><input id="sizes" value="S,M,L,XL,XXL"></div>
+<div><label>الشارة</label><input id="tag" value="Nouveau"></div>
+<div style="grid-column:1/-1"><label>صورة المنتج</label><input class="file" id="imageFile" type="file" accept="image/*"></div>
+</div><br><button class="gold" onclick="addProduct()">➕ إضافة المنتج</button></div>
+<div class="panel"><h2>المنتجات الحالية</h2><div id="list" class="products"></div></div>
+<div class="panel"><button class="gold" onclick="exportJSON()">⬇️ تصدير products.json</button> <button class="dark" onclick="resetProducts()">↺ إعادة المنتجات الأصلية</button></div>
+</div>
+<script>
+const defaults=[
+{name:"T-shirt",price:3200,image:"tshirts.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Ensemble",price:7500,image:"ensembles.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Pantalon",price:3800,image:"pantalons.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"},
+{name:"Veste",price:4500,image:"vestes.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau"}];
+let products=JSON.parse(localStorage.getItem("akram_products")||"null")||defaults;
+function save(){localStorage.setItem("akram_products",JSON.stringify(products));render()}
+function render(){document.getElementById("list").innerHTML=products.map((p,i)=>`<div class="product"><img src="${p.image}"><div><b>${p.name}</b><div class="muted">${Number(p.price).toLocaleString("fr-FR")} DA — ${(p.sizes||[]).join(", ")}</div></div><div class="actions"><button class="danger" onclick="removeProduct(${i})">حذف</button></div></div>`).join("")||"<p class='muted'>لا توجد منتجات.</p>"}
+function addProduct(){
+ const name=document.getElementById("name").value.trim(),price=Number(document.getElementById("price").value),sizes=document.getElementById("sizes").value.split(",").map(x=>x.trim()).filter(Boolean),tag=document.getElementById("tag").value.trim()||"Nouveau",file=document.getElementById("imageFile").files[0];
+ if(!name||!price||!sizes.length){alert("أدخل الاسم والسعر والمقاسات.");return}
+ const finish=(image)=>{products.push({name,price,image,sizes,tag});save();document.getElementById("name").value="";document.getElementById("price").value="";document.getElementById("imageFile").value="";alert("تمت إضافة المنتج.");};
+ if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish("tshirts.jpg");
+}
+function removeProduct(i){if(confirm("حذف هذا المنتج؟")){products.splice(i,1);save()}}
+function resetProducts(){if(confirm("إرجاع المنتجات الأصلية؟")){products=[...defaults];save()}}
+function exportJSON(){const blob=new Blob([JSON.stringify(products,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="products.json";a.click();URL.revokeObjectURL(a.href)}
+render();
+</script></body></html>
