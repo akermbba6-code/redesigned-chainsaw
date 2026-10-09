@@ -117,7 +117,18 @@ footer h3{color:#fff}
 </footer>
 <div class="copy">© 2026 AKRAM BOUTIQUE. Tous droits réservés.</div>
 
-<button class="admin-button" onclick="openAdmin()">⚙️ الإدارة</button>
+<button type="button" class="admin-button" onclick="openAdmin()">⚙️ الإدارة</button>
+<div class="admin-panel" id="adminLoginPanel" role="dialog" aria-modal="true" aria-label="تسجيل دخول الإدارة" style="display:none">
+  <div class="admin-box" style="max-width:420px;margin:12vh auto">
+    <h2>🔐 دخول الإدارة</h2>
+    <p>أدخل كلمة مرور لوحة الإدارة للمتابعة.</p>
+    <label class="admin-label" for="adminPasswordInput">كلمة المرور</label>
+    <input class="admin-input" id="adminPasswordInput" type="password" autocomplete="current-password" placeholder="كلمة المرور">
+    <p class="admin-message" id="adminLoginMessage"></p>
+    <button type="button" class="admin-save" id="adminLoginSubmit">دخول</button>
+    <button type="button" class="admin-edit" id="adminLoginCancel">إلغاء</button>
+  </div>
+</div>
 <div class="admin-panel" id="adminPanel" role="dialog" aria-modal="true" aria-label="لوحة الإدارة">
   <div class="admin-box">
     <button class="close-admin" onclick="closeAdmin()">✕ إغلاق</button>
@@ -229,12 +240,35 @@ function filterCategory(category){
   document.getElementById("productsTitle").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function openAdmin(){
-  const password=prompt("🔐 أدخل كلمة مرور لوحة الإدارة:");
-  if(password!=="1234"){if(password!==null)alert("❌ كلمة المرور غير صحيحة");return;}
+  const login=document.getElementById("adminLoginPanel");
+  const input=document.getElementById("adminPasswordInput");
+  const message=document.getElementById("adminLoginMessage");
+  input.value="";
+  message.textContent="";
+  login.style.display="block";
+  setTimeout(()=>input.focus(),100);
+}
+function submitAdminLogin(){
+  const input=document.getElementById("adminPasswordInput");
+  const message=document.getElementById("adminLoginMessage");
+  if(input.value!=="1234"){
+    message.textContent="كلمة المرور غير صحيحة.";
+    input.value="";
+    input.focus();
+    return;
+  }
+  document.getElementById("adminLoginPanel").style.display="none";
   document.getElementById("adminPanel").style.display="block";
   renderAdmin();
 }
-function closeAdmin(){document.getElementById("adminPanel").style.display="none";}
+function closeAdmin(){
+  document.getElementById("adminPanel").style.display="none";
+  document.getElementById("adminLoginPanel").style.display="none";
+}
+document.getElementById("adminLoginSubmit").addEventListener("click",submitAdminLogin);
+document.getElementById("adminLoginCancel").addEventListener("click",()=>document.getElementById("adminLoginPanel").style.display="none");
+document.getElementById("adminPasswordInput").addEventListener("keydown",event=>{if(event.key==="Enter")submitAdminLogin();});
+document.getElementById("adminLoginPanel").addEventListener("click",event=>{if(event.target.id==="adminLoginPanel")document.getElementById("adminLoginPanel").style.display="none";});
 document.getElementById("adminPanel").addEventListener("click",event=>{if(event.target.id==="adminPanel")closeAdmin();});
 document.addEventListener("keydown",event=>{if(event.key==="Escape")closeAdmin();});
 document.querySelectorAll("#adminSizes [data-admin-size]").forEach(button=>{
@@ -267,37 +301,4 @@ function saveAdminProduct(){
   const product={
     name,price,category,tag,sizes,
     imageData:pendingImageData || (old&&old.imageData) || "",
-    image:(pendingImageData || (old&&old.imageData)) ? ((old&&old.image)||fallback) : ((old&&old.image)||fallback)
-  };
-  const previous=products.map(p=>({...p}));
-  if(editingIndex>=0)products[editingIndex]=product;else products.push(product);
-  try{
-    localStorage.setItem("akram_products_v2",JSON.stringify(products));
-    localStorage.setItem("akram_products",JSON.stringify(products));
-  }catch(error){
-    products=previous;
-    alert("لم يتم الحفظ لأن مساحة تخزين المتصفح ممتلئة. اختر صورة أصغر ثم حاول مجددًا.");
-    return;
-  }
-  document.getElementById("adminMessage").textContent="تم حفظ المنتج في هذا المتصفح.";
-  clearAdminForm();render();renderAdmin();
-}
-function renderAdmin(){
-  const box=document.getElementById("adminProducts");
-  if(!products.length){box.innerHTML="<p>لا توجد منتجات.</p>";return;}
-  box.innerHTML=products.map((p,i)=>`<div class="admin-product">
-    <img src="${safeText(productImage(p))}" alt="" onerror="this.onerror=null;this.src='./tshirts.jpg'">
-    <div class="admin-product-info"><strong>${safeText(p.name)}</strong><span>${money(p.price)}</span>
-    <div>التصنيف: ${safeText(p.category||inferCategory(p.image))}</div>
-    <div>المقاسات: ${safeText((p.sizes||[]).join(", "))}</div></div>
-    <div><button class="admin-edit" onclick="editAdminProduct(${i})">تعديل</button><button class="admin-delete" onclick="deleteAdminProduct(${i})">حذف</button></div>
-  </div>`).join("");
-}
-function editAdminProduct(index){
-  const p=products[index];editingIndex=index;pendingImageData="";
-  document.getElementById("adminFormTitle").textContent="تعديل المنتج";
-  document.getElementById("adminName").value=p.name||"";
-  document.getElementById("adminPrice").value=p.price||"";
-  document.getElementById("adminCategory").value=p.category||inferCategory(p.image);
-  document.getElementById("adminTag").value=p.tag||"Nouveau";
-  const selected=Ar
+    image:(pendingImageData || (ol
