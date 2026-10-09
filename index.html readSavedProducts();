@@ -308,4 +308,76 @@ function saveAdminProduct(){
   const product={
     name,price,category,tag,sizes,
     imageData:pendingImageData || (old&&old.imageData) || "",
-    image:(pendingImageData || (ol
+    
+image: (pendingImageData || (old && old.image)) || fallback
+  };
+
+  if (editingIndex >= 0) {
+    products[editingIndex] = product;
+  } else {
+    products.push(product);
+  }
+
+  try {
+    localStorage.setItem("akram_products_v2", JSON.stringify(products));
+    localStorage.setItem("akram_products", JSON.stringify(products));
+  } catch (error) {
+    alert("تعذر الحفظ. جرّب صورة أصغر.");
+    return;
+  }
+
+  clearAdminForm();
+  render();
+  renderAdmin();
+  document.getElementById("adminMessage").textContent = "تم حفظ المنتج بنجاح.";
+}
+
+function clearAdminForm() {
+  editingIndex = -1;
+  pendingImageData = "";
+  document.getElementById("adminName").value = "";
+  document.getElementById("adminPrice").value = "";
+  document.getElementById("adminCategory").value = "T-Shirts";
+  document.getElementById("adminTag").value = "Nouveau";
+  document.getElementById("adminImageFile").value = "";
+  document.getElementById("adminImagePreview").style.display = "none";
+  document.getElementById("adminFormTitle").textContent = "إضافة منتج";
+  document.getElementById("saveProductButton").textContent = "💾 حفظ المنتج";
+
+  document.querySelectorAll("#adminSizes [data-admin-size]").forEach(button => {
+    button.classList.toggle(
+      "selected",
+      ["S", "M", "L", "XL", "XXL"].includes(button.dataset.adminSize)
+    );
+  });
+}
+
+function renderAdmin() {
+  const container = document.getElementById("adminProducts");
+  container.innerHTML = products.map((p, i) => `
+    <div class="admin-product">
+      <img src="${safeText(productImage(p))}" alt="">
+      <div class="admin-product-info">
+        <strong>${safeText(p.name)}</strong>
+        <span>${money(p.price)} — ${safeText((p.sizes || []).join(", "))}</span>
+      </div>
+      <button class="admin-delete" onclick="deleteAdminProduct(${i})">حذف</button>
+    </div>
+  `).join("") || "<p>لا توجد منتجات.</p>";
+}
+
+function deleteAdminProduct(index) {
+  if (!confirm("هل تريد حذف هذا المنتج؟")) return;
+  products.splice(index, 1);
+  localStorage.setItem("akram_products_v2", JSON.stringify(products));
+  localStorage.setItem("akram_products", JSON.stringify(products));
+  render();
+  renderAdmin();
+}
+
+readSavedProducts();
+render();
+</script>
+</body>
+</html>
+
