@@ -11,7 +11,7 @@ body{margin:0;background:#070707;color:#f4f0e8;font-family:Arial,sans-serif}
 a{color:inherit;text-decoration:none}
 button,input,select{font:inherit}
 .top{padding:10px 5%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid #252525;font-size:13px}
-nav{height:84px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252525;background:#080808;position:sticky;top:0;z-index:5}
+nav{min-height:84px;padding:8px 5%;display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid #252525;background:#080808;position:sticky;top:0;z-index:5}
 .logo{width:68px;height:68px;border-radius:50%;object-fit:cover}
 .links{display:flex;gap:30px;font-size:15px}
 .links a:hover{color:#e1ad4b}
@@ -82,9 +82,9 @@ footer h3{color:#fff}
     <a href="#apropos">À propos</a>
     <a href="#contact">Contact</a>
   </div>
-  <a href="./admin.html" style="background:#e1ad4b;color:#111;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:bold;white-space:nowrap">Administration ⚙️</a>
+  <button type="button" class="admin-save" onclick="openAdmin()">Administration ⚙️</button>
 </nav>
-  
+
 <header class="hero" id="accueil"><div class="hero-content">
   <div class="eyebrow">AKRAM BOUTIQUE — FASHION HOMME</div>
   <h1>Le style <span class="gold">au quotidien</span></h1>
@@ -125,7 +125,7 @@ footer h3{color:#fff}
 <div class="copy">© 2026 AKRAM BOUTIQUE. Tous droits réservés.</div>
 
 <button type="button" class="admin-button" onclick="openAdmin()">⚙️ الإدارة</button>
-<div class="admin-panel" id="adminLoginPanel" role="dialog" aria-modal="true" aria-label="تسجيل دخول الإدارة" style="display:none">
+<div class="admin-panel" id="adminLoginPanel" role="dialog" aria-modal="true" aria-label="تسجيل دخول الإدارة">
   <div class="admin-box" style="max-width:420px;margin:12vh auto">
     <h2>🔐 دخول الإدارة</h2>
     <p>أدخل كلمة مرور لوحة الإدارة للمتابعة.</p>
@@ -141,7 +141,7 @@ footer h3{color:#fff}
     <button class="close-admin" onclick="closeAdmin()">✕ إغلاق</button>
     <h2>⚙️ لوحة إدارة AKRAM BOUTIQUE</h2>
     <p>من هنا يمكنك إضافة المنتجات وتعديلها وحذفها واختيار الصور والمقاسات.</p>
-    <p class="admin-help">ملاحظة: المنتجات التي تحفظها هنا تبقى في هذا المتصفح فقط؛ لا تظهر تلقائيًا على أجهزة الزبائن الآخرين.</p>
+    <p class="admin-help">ملاحظة: المنتجات والصور التي تحفظها هنا تبقى في هذا المتصفح فقط؛ لا تظهر تلقائيًا على أجهزة الزبائن الآخرين.</p>
     <hr>
     <h3 id="adminFormTitle">إضافة منتج</h3>
     <label class="admin-label" for="adminName">اسم المنتج</label>
@@ -165,8 +165,8 @@ footer h3{color:#fff}
     <input class="admin-input" id="adminImageFile" type="file" accept="image/*">
     <img id="adminImagePreview" alt="معاينة صورة المنتج" style="display:none;width:140px;height:140px;object-fit:contain;margin:10px 0;border-radius:10px;background:#222">
     <p class="admin-help">اختر صورة صغيرة (يفضل أقل من 1.5 ميغابايت) حتى لا تمتلئ مساحة تخزين المتصفح.</p>
-    <button class="admin-save" id="saveProductButton" onclick="saveAdminProduct()">💾 حفظ المنتج</button>
-    <button class="admin-edit" onclick="clearAdminForm()">إلغاء / منتج جديد</button>
+    <button type="button" class="admin-save" id="saveProductButton" onclick="saveAdminProduct()">💾 حفظ المنتج</button>
+    <button type="button" class="admin-edit" onclick="clearAdminForm()">إلغاء / منتج جديد</button>
     <p class="admin-message" id="adminMessage"></p>
     <hr>
     <h3>المنتجات الحالية</h3>
@@ -215,7 +215,9 @@ function wa(p,size){
 function safeText(value){
   return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-function productImage(p){return p.imageData || p.image || "./"+({"T-Shirts":"tshirts.jpg","Ensembles":"ensembles.jpg","Pantalons":"pantalons.jpg","Vestes":"vestes.jpg"}[p.category||inferCategory(p.image)]||"tshirts.jpg");}
+function productImage(p){
+  return p.imageData || p.image || "./"+({"T-Shirts":"tshirts.jpg","Ensembles":"ensembles.jpg","Pantalons":"pantalons.jpg","Vestes":"vestes.jpg"}[p.category||inferCategory(p.image)]||"tshirts.jpg");
+}
 function render(){
   const grid=document.getElementById("productsGrid");
   const shown=products.map((p,index)=>({...p,_index:index})).filter(p=>activeFilter==="Tous"||p.category===activeFilter);
@@ -249,9 +251,8 @@ function filterCategory(category){
 function openAdmin(){
   const login=document.getElementById("adminLoginPanel");
   const input=document.getElementById("adminPasswordInput");
-  const message=document.getElementById("adminLoginMessage");
+  document.getElementById("adminLoginMessage").textContent="";
   input.value="";
-  message.textContent="";
   login.style.display="block";
   setTimeout(()=>input.focus(),100);
 }
@@ -271,6 +272,111 @@ function submitAdminLogin(){
 function closeAdmin(){
   document.getElementById("adminPanel").style.display="none";
   document.getElementById("adminLoginPanel").style.display="none";
+}
+function saveProductsToStorage(){
+  try {
+    localStorage.setItem("akram_products_v2",JSON.stringify(products));
+    return true;
+  } catch(error) {
+    const withoutLargeImages=products.map(p=>({...p,imageData:""}));
+    try {
+      localStorage.setItem("akram_products_v2",JSON.stringify(withoutLargeImages));
+      products=withoutLargeImages;
+      return false;
+    } catch(secondError) {
+      alert("مساحة التخزين ممتلئة. احذف بعض صور المنتجات الصغيرة أو قلّل حجم الصور ثم حاول مجددًا.");
+      return false;
+    }
+  }
+}
+function renderAdmin(){
+  const container=document.getElementById("adminProducts");
+  if(!products.length){
+    container.innerHTML='<p class="admin-help">لا توجد منتجات حاليًا.</p>';
+    return;
+  }
+  container.innerHTML=products.map((p,index)=>`
+    <div class="admin-product">
+      <img src="${safeText(productImage(p))}" alt="" onerror="this.onerror=null;this.src='./tshirts.jpg'">
+      <div class="admin-product-info">
+        <strong>${safeText(p.name||"منتج")}</strong>
+        <span>${money(p.price)} · ${safeText(p.category||"T-Shirts")}</span>
+        <div class="admin-help">المقاسات: ${safeText((Array.isArray(p.sizes)?p.sizes:[]).join("، ")||"غير محددة")}</div>
+      </div>
+      <button type="button" class="admin-edit" onclick="editAdminProduct(${index})">تعديل</button>
+      <button type="button" class="admin-delete" onclick="deleteAdminProduct(${index})">حذف</button>
+    </div>`).join("");
+}
+function saveAdminProduct(){
+  const name=document.getElementById("adminName").value.trim();
+  const price=Number(document.getElementById("adminPrice").value);
+  const category=document.getElementById("adminCategory").value;
+  const tag=document.getElementById("adminTag").value.trim()||"Nouveau";
+  const sizes=[...document.querySelectorAll("#adminSizes [data-admin-size].selected")].map(button=>button.dataset.adminSize);
+  if(!name||!Number.isFinite(price)||price<=0){alert("أدخل اسم المنتج وسعرًا صحيحًا.");return;}
+  if(!sizes.length){alert("اختر مقاسًا واحدًا على الأقل.");return;}
+  const old=editingIndex>=0?products[editingIndex]:null;
+  const fallback="./"+({"T-Shirts":"tshirts.jpg","Ensembles":"ensembles.jpg","Pantalons":"pantalons.jpg","Vestes":"vestes.jpg"}[category]||"tshirts.jpg");
+  const image=pendingImageData || (old&&(old.imageData||old.image)) || fallback;
+    const product={name,price,category,tag,sizes,image:pendingImageData?"":image,imageData:pendingImageData || (old?old.imageData||"":"")};
+  if(editingIndex>=0) products[editingIndex]=product;
+  else products.unshift(product);
+  const stored=saveProductsToStorage();
+  render();
+  renderAdmin();
+  document.getElementById("adminMessage").textContent=stored?"تم حفظ المنتج بنجاح.":"حُفظ المنتج، لكن تعذّر الاحتفاظ بالصورة المرفوعة بسبب مساحة التخزين.";
+  clearAdminForm(false);
+}
+function editAdminProduct(index){
+  const p=products[index];
+  if(!p)return;
+  editingIndex=index;
+  document.getElementById("adminFormTitle").textContent="تعديل المنتج";
+  document.getElementById("adminName").value=p.name||"";
+  document.getElementById("adminPrice").value=p.price||"";
+  document.getElementById("adminCategory").value=p.category||inferCategory(p.image);
+  document.getElementById("adminTag").value=p.tag||"Nouveau";
+  document.querySelectorAll("#adminSizes [data-admin-size]").forEach(button=>{
+    button.classList.toggle("selected",Array.isArray(p.sizes)&&p.sizes.includes(button.dataset.adminSize));
+  });
+  pendingImageData="";
+  const preview=document.getElementById("adminImagePreview");
+  const existing=p.imageData||"";
+  if(existing){preview.src=existing;preview.style.display="block";}
+  else {preview.removeAttribute("src");preview.style.display="none";}
+  document.getElementById("adminImageFile").value="";
+  document.getElementById("saveProductButton").textContent="💾 حفظ التعديلات";
+  document.getElementById("adminMessage").textContent="أنت تعدّل منتجًا موجودًا.";
+  document.getElementById("adminName").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function deleteAdminProduct(index){
+  const p=products[index];
+  if(!p)return;
+  if(!confirm('هل تريد حذف المنتج "'+(p.name||"منتج")+'"؟'))return;
+  products.splice(index,1);
+  saveProductsToStorage();
+  render();
+  renderAdmin();
+  if(editingIndex===index)clearAdminForm();
+  else if(editingIndex>index)editingIndex--;
+  document.getElementById("adminMessage").textContent="تم حذف المنتج.";
+}
+function clearAdminForm(clearMessage=true){
+  editingIndex=-1;
+  pendingImageData="";
+  document.getElementById("adminFormTitle").textContent="إضافة منتج";
+  document.getElementById("adminName").value="";
+  document.getElementById("adminPrice").value="";
+  document.getElementById("adminCategory").value="T-Shirts";
+  document.getElementById("adminTag").value="Nouveau";
+  document.querySelectorAll("#adminSizes [data-admin-size]").forEach(button=>{
+    button.classList.toggle("selected",["S","M","L","XL","XXL"].includes(button.dataset.adminSize));
+  });
+  document.getElementById("adminImageFile").value="";
+  const preview=document.getElementById("adminImagePreview");
+  preview.removeAttribute("src");preview.style.display="none";
+  document.getElementById("saveProductButton").textContent="💾 حفظ المنتج";
+  if(clearMessage)document.getElementById("adminMessage").textContent="";
 }
 document.getElementById("adminLoginSubmit").addEventListener("click",submitAdminLogin);
 document.getElementById("adminLoginCancel").addEventListener("click",()=>document.getElementById("adminLoginPanel").style.display="none");
@@ -295,89 +401,8 @@ document.getElementById("adminImageFile").addEventListener("change",function(eve
   reader.onerror=()=>alert("تعذر قراءة الصورة. حاول اختيار صورة أخرى.");
   reader.readAsDataURL(file);
 });
-function saveAdminProduct(){
-  const name=document.getElementById("adminName").value.trim();
-  const price=Number(document.getElementById("adminPrice").value);
-  const category=document.getElementById("adminCategory").value;
-  const tag=document.getElementById("adminTag").value.trim()||"Nouveau";
-  const sizes=[...document.querySelectorAll("#adminSizes [data-admin-size].selected")].map(button=>button.dataset.adminSize);
-  if(!name||!Number.isFinite(price)||price<=0){alert("أدخل اسم المنتج وسعرًا صحيحًا.");return;}
-  if(!sizes.length){alert("اختر مقاسًا واحدًا على الأقل.");return;}
-  const old=editingIndex>=0?products[editingIndex]:null;
-  const fallback="./"+({"T-Shirts":"tshirts.jpg","Ensembles":"ensembles.jpg","Pantalons":"pantalons.jpg","Vestes":"vestes.jpg"}[category]);
-  const product={
-    name,price,category,tag,sizes,
-    imageData:pendingImageData || (old&&old.imageData) || "",
-    
-image: (pendingImageData || (old && old.image)) || fallback
-  };
-
-  if (editingIndex >= 0) {
-    products[editingIndex] = product;
-  } else {
-    products.push(product);
-  }
-
-  try {
-    localStorage.setItem("akram_products_v2", JSON.stringify(products));
-    localStorage.setItem("akram_products", JSON.stringify(products));
-  } catch (error) {
-    alert("تعذر الحفظ. جرّب صورة أصغر.");
-    return;
-  }
-
-  clearAdminForm();
-  render();
-  renderAdmin();
-  document.getElementById("adminMessage").textContent = "تم حفظ المنتج بنجاح.";
-}
-
-function clearAdminForm() {
-  editingIndex = -1;
-  pendingImageData = "";
-  document.getElementById("adminName").value = "";
-  document.getElementById("adminPrice").value = "";
-  document.getElementById("adminCategory").value = "T-Shirts";
-  document.getElementById("adminTag").value = "Nouveau";
-  document.getElementById("adminImageFile").value = "";
-  document.getElementById("adminImagePreview").style.display = "none";
-  document.getElementById("adminFormTitle").textContent = "إضافة منتج";
-  document.getElementById("saveProductButton").textContent = "💾 حفظ المنتج";
-
-  document.querySelectorAll("#adminSizes [data-admin-size]").forEach(button => {
-    button.classList.toggle(
-      "selected",
-      ["S", "M", "L", "XL", "XXL"].includes(button.dataset.adminSize)
-    );
-  });
-}
-
-function renderAdmin() {
-  const container = document.getElementById("adminProducts");
-  container.innerHTML = products.map((p, i) => `
-    <div class="admin-product">
-      <img src="${safeText(productImage(p))}" alt="">
-      <div class="admin-product-info">
-        <strong>${safeText(p.name)}</strong>
-        <span>${money(p.price)} — ${safeText((p.sizes || []).join(", "))}</span>
-      </div>
-      <button class="admin-delete" onclick="deleteAdminProduct(${i})">حذف</button>
-    </div>
-  `).join("") || "<p>لا توجد منتجات.</p>";
-}
-
-function deleteAdminProduct(index) {
-  if (!confirm("هل تريد حذف هذا المنتج؟")) return;
-  products.splice(index, 1);
-  localStorage.setItem("akram_products_v2", JSON.stringify(products));
-  localStorage.setItem("akram_products", JSON.stringify(products));
-  render();
-  renderAdmin();
-}
-
 readSavedProducts();
 render();
 </script>
 </body>
 </html>
-
