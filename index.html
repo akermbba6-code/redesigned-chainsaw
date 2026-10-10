@@ -174,8 +174,19 @@ footer h3{color:#fff}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 <script>
 "use strict";
+  
+const SUPABASE_URL = "https://cmhhysltwmgemyqxekej.supabase.co";
+const SUPABASE_KEY = "sb_publishable_p3s8WLJHdsANPyAoEs27yQ_D5nv560q";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+  
 const DEFAULT_PRODUCTS = [
   {name:"T-shirt",price:3200,image:"./tshirts.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau",category:"T-Shirts"},
   {name:"Ensemble",price:7500,image:"./ensembles.jpg",sizes:["S","M","L","XL","XXL"],tag:"Nouveau",category:"Ensembles"},
